@@ -1,0 +1,55 @@
+{
+  "srs_results": {
+    "A1": {
+      "spurious_reliance_score": 0.42311,
+      "id_accuracy": 0.9737,
+      "ood_accuracy": 0.6381,
+      "ood_drop": 0.3356,
+      "cf_accuracy_drop": 0.47850000000000004,
+      "cf_flip_rate": 0.4844,
+      "cf_mean_logit_change": 5.041301040640473,
+      "id_loss": 0.09844947943240404,
+      "ood_loss": 1.1079099557876586
+    },
+    "A2": {
+      "spurious_reliance_score": 0.40823,
+      "id_accuracy": 0.9729,
+      "ood_accuracy": 0.64,
+      "ood_drop": 0.3329,
+      "cf_accuracy_drop": 0.45609999999999995,
+      "cf_flip_rate": 0.4608,
+      "cf_mean_logit_change": 4.94695941901654,
+      "id_loss": 0.09909836396500468,
+      "ood_loss": 1.1339676460266113
+    },
+    "R1": {
+      "spurious_reliance_score": 0.10302,
+      "id_accuracy": 0.942,
+      "ood_accuracy": 0.8523,
+      "ood_drop": 0.0897,
+      "cf_accuracy_drop": 0.11119999999999997,
+      "cf_flip_rate": 0.1126,
+      "cf_mean_logit_change": 1.9531703544676304,
+      "id_loss": 0.18189006091356277,
+      "ood_loss": 0.4571601749420166
+    },
+    "R2": {
+      "spurious_reliance_score": 0.09904000000000004,
+      "id_accuracy": 0.9374,
+      "ood_accuracy": 0.8533,
+      "ood_drop": 0.08410000000000006,
+      "cf_accuracy_drop": 0.10840000000000005,
+      "cf_flip_rate": 0.1096,
+      "cf_mean_logit_change": 1.9263405166119336,
+      "id_loss": 0.19287113201618195,
+      "ood_loss": 0.4661369387626648
+    }
+  },
+  "group_statistics": {
+    "spurious_avg_srs": 0.41567,
+    "robust_avg_srs": 0.10103000000000002,
+    "spurious_avg_ood_drop": 0.33425,
+    "robust_avg_ood_drop": 0.08690000000000003,
+    "srs_ratio": 4.11432247847174
+  }
+}
