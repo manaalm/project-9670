@@ -1,0 +1,80 @@
+{
+  "pre_rebasin": {
+    "A1-A2": {
+      "type": "spurious-spurious",
+      "weight_distance": 21.35919761657715,
+      "cosine_similarity": 0.24024002254009247,
+      "agreement": 0.9838
+    },
+    "R1-R2": {
+      "type": "robust-robust",
+      "weight_distance": 37.13143539428711,
+      "cosine_similarity": 0.18053297698497772,
+      "agreement": 0.935
+    },
+    "A1-R1": {
+      "type": "spurious-robust",
+      "weight_distance": 29.507976531982422,
+      "cosine_similarity": 0.27034106850624084,
+      "agreement": 0.928
+    }
+  },
+  "post_rebasin": {
+    "A1-A2": {
+      "type": "spurious-spurious",
+      "weight_distance": 16.299545288085938,
+      "cosine_similarity": 0.5575674176216125,
+      "agreement": 0.9844
+    },
+    "R1-R2": {
+      "type": "robust-robust",
+      "weight_distance": 30.669538497924805,
+      "cosine_similarity": 0.4409361779689789,
+      "agreement": 0.9346
+    },
+    "A1-R1": {
+      "type": "spurious-robust",
+      "weight_distance": 27.273195266723633,
+      "cosine_similarity": 0.39684849977493286,
+      "agreement": 0.9283
+    }
+  },
+  "comparison": {
+    "A1-A2": {
+      "type": "spurious-spurious",
+      "pre_weight_dist": 21.35919761657715,
+      "post_weight_dist": 16.299545288085938,
+      "weight_dist_change": -5.059652328491211,
+      "pre_cosine_sim": 0.24024002254009247,
+      "post_cosine_sim": 0.5575674176216125,
+      "cosine_sim_change": 0.3173273950815201,
+      "pre_agreement": 0.9838,
+      "post_agreement": 0.9844,
+      "agreement_change": 0.0006000000000000449
+    },
+    "R1-R2": {
+      "type": "robust-robust",
+      "pre_weight_dist": 37.13143539428711,
+      "post_weight_dist": 30.669538497924805,
+      "weight_dist_change": -6.461896896362305,
+      "pre_cosine_sim": 0.18053297698497772,
+      "post_cosine_sim": 0.4409361779689789,
+      "cosine_sim_change": 0.26040320098400116,
+      "pre_agreement": 0.935,
+      "post_agreement": 0.9346,
+      "agreement_change": -0.00040000000000006697
+    },
+    "A1-R1": {
+      "type": "spurious-robust",
+      "pre_weight_dist": 29.507976531982422,
+      "post_weight_dist": 27.273195266723633,
+      "weight_dist_change": -2.234781265258789,
+      "pre_cosine_sim": 0.27034106850624084,
+      "post_cosine_sim": 0.39684849977493286,
+      "cosine_sim_change": 0.12650743126869202,
+      "pre_agreement": 0.928,
+      "post_agreement": 0.9283,
+      "agreement_change": 0.00029999999999996696
+    }
+  }
+}
