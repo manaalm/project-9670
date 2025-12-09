@@ -357,3 +357,300 @@ def semantic_barrier_metric(
     max_var_alpha = alphas[np.argmax(variations)]
 
     return float(max_var), float(max_var_alpha)
+
+
+# =============================================================================
+# Mechanism Distance Metrics
+# =============================================================================
+
+def get_srs_scalar(srs_results: Dict[str, float]) -> float:
+    """
+    Extract the scalar Spurious Reliance Score from a results dictionary.
+
+    The SRS is computed as:
+        SRS = lambda_ood * OOD_drop + lambda_cf * CF_accuracy_drop + lambda_flip * flip_rate
+
+    Default weights (lambda values):
+        lambda_ood = 0.4
+        lambda_cf = 0.3
+        lambda_flip = 0.3
+
+    Args:
+        srs_results: Dictionary from compute_spurious_reliance_score()
+
+    Returns:
+        Scalar SRS value
+    """
+    return srs_results['spurious_reliance_score']
+
+
+def compute_srs_distance(
+    srs_a: Dict[str, float],
+    srs_b: Dict[str, float],
+) -> float:
+    """
+    Compute the cue-reliance distance between two models based on their SRS.
+
+    dist_srs = |SRS(A) - SRS(B)|
+
+    Args:
+        srs_a: SRS results for model A
+        srs_b: SRS results for model B
+
+    Returns:
+        Absolute difference in SRS
+    """
+    srs_scalar_a = get_srs_scalar(srs_a)
+    srs_scalar_b = get_srs_scalar(srs_b)
+    return abs(srs_scalar_a - srs_scalar_b)
+
+
+def compute_srs_for_model(
+    model: nn.Module,
+    id_loader: DataLoader,
+    ood_loader: DataLoader,
+    cf_dataset: 'CounterfactualPatchDataset',
+    device: torch.device,
+    weights: Optional[Dict[str, float]] = None,
+) -> Dict[str, float]:
+    """
+    Convenience wrapper for compute_spurious_reliance_score.
+
+    Args:
+        model: Model to evaluate
+        id_loader: In-distribution test loader
+        ood_loader: Out-of-distribution test loader
+        cf_dataset: Counterfactual patch dataset
+        device: Torch device
+        weights: Optional custom weights for SRS components
+
+    Returns:
+        Dictionary with SRS and component metrics
+    """
+    return compute_spurious_reliance_score(
+        model, id_loader, ood_loader, cf_dataset, device, weights
+    )
+
+
+# =============================================================================
+# Barrier Computation Helpers
+# =============================================================================
+
+def compute_barriers_from_interpolation(
+    interp_results: Dict[str, Dict[str, np.ndarray]],
+) -> Dict[str, Dict[str, float]]:
+    """
+    Compute loss and accuracy barriers from interpolation results.
+
+    Args:
+        interp_results: Results from evaluate_interpolation_multi_dataset()
+            Expected keys: 'id', 'ood' each with 'alphas', 'losses', 'accuracies'
+
+    Returns:
+        Dictionary with barrier metrics for each dataset type:
+        {
+            'id': {'loss_barrier': ..., 'acc_barrier': ...},
+            'ood': {'loss_barrier': ..., 'acc_barrier': ...}
+        }
+    """
+    barriers = {}
+
+    for dataset_name in ['id', 'ood']:
+        if dataset_name not in interp_results:
+            continue
+
+        data = interp_results[dataset_name]
+        alphas = data['alphas']
+        losses = data['losses']
+        accuracies = data['accuracies']
+
+        # Compute loss barrier
+        endpoint_max_loss = max(losses[0], losses[-1])
+        max_loss = np.max(losses)
+        loss_barrier = max_loss - endpoint_max_loss
+
+        # Compute accuracy barrier
+        endpoint_min_acc = min(accuracies[0], accuracies[-1])
+        min_acc = np.min(accuracies)
+        acc_barrier = endpoint_min_acc - min_acc
+
+        barriers[dataset_name] = {
+            'loss_barrier': float(loss_barrier),
+            'acc_barrier': float(acc_barrier),
+            'max_loss': float(max_loss),
+            'min_acc': float(min_acc),
+            'endpoint_loss_0': float(losses[0]),
+            'endpoint_loss_1': float(losses[-1]),
+            'endpoint_acc_0': float(accuracies[0]),
+            'endpoint_acc_1': float(accuracies[-1]),
+        }
+
+    return barriers
+
+
+def compute_all_barriers(
+    pre_results: Dict[str, Dict[str, np.ndarray]],
+    post_results: Optional[Dict[str, Dict[str, np.ndarray]]] = None,
+) -> Dict[str, float]:
+    """
+    Compute all barrier metrics for a model pair (pre and post rebasin).
+
+    Args:
+        pre_results: Pre-rebasin interpolation results
+        post_results: Post-rebasin interpolation results (optional)
+
+    Returns:
+        Flat dictionary with all barrier metrics:
+        {
+            'barrier_id_raw': ...,
+            'barrier_ood_raw': ...,
+            'barrier_id_rebasin': ...,
+            'barrier_ood_rebasin': ...,
+        }
+    """
+    output = {}
+
+    # Pre-rebasin barriers
+    pre_barriers = compute_barriers_from_interpolation(pre_results)
+    output['barrier_id_raw'] = pre_barriers.get('id', {}).get('loss_barrier', np.nan)
+    output['barrier_ood_raw'] = pre_barriers.get('ood', {}).get('loss_barrier', np.nan)
+    output['barrier_id_acc_raw'] = pre_barriers.get('id', {}).get('acc_barrier', np.nan)
+    output['barrier_ood_acc_raw'] = pre_barriers.get('ood', {}).get('acc_barrier', np.nan)
+
+    # Post-rebasin barriers
+    if post_results is not None:
+        post_barriers = compute_barriers_from_interpolation(post_results)
+        output['barrier_id_rebasin'] = post_barriers.get('id', {}).get('loss_barrier', np.nan)
+        output['barrier_ood_rebasin'] = post_barriers.get('ood', {}).get('loss_barrier', np.nan)
+        output['barrier_id_acc_rebasin'] = post_barriers.get('id', {}).get('acc_barrier', np.nan)
+        output['barrier_ood_acc_rebasin'] = post_barriers.get('ood', {}).get('acc_barrier', np.nan)
+    else:
+        output['barrier_id_rebasin'] = np.nan
+        output['barrier_ood_rebasin'] = np.nan
+        output['barrier_id_acc_rebasin'] = np.nan
+        output['barrier_ood_acc_rebasin'] = np.nan
+
+    return output
+
+
+# =============================================================================
+# Statistical Analysis Utilities
+# =============================================================================
+
+def bootstrap_correlation(
+    x: np.ndarray,
+    y: np.ndarray,
+    n_bootstrap: int = 2000,
+    confidence: float = 0.95,
+    method: str = 'pearson',
+    seed: int = 42,
+) -> Dict[str, float]:
+    """
+    Compute correlation with bootstrapped confidence intervals.
+
+    Args:
+        x: First variable
+        y: Second variable
+        n_bootstrap: Number of bootstrap samples
+        confidence: Confidence level (default 0.95 for 95% CI)
+        method: 'pearson' or 'spearman'
+        seed: Random seed
+
+    Returns:
+        Dictionary with:
+        - 'correlation': Point estimate
+        - 'ci_lower': Lower bound of CI
+        - 'ci_upper': Upper bound of CI
+        - 'p_value': Approximate p-value
+    """
+    from scipy import stats
+
+    np.random.seed(seed)
+    n = len(x)
+
+    # Point estimate
+    if method == 'pearson':
+        corr, pval = stats.pearsonr(x, y)
+    else:  # spearman
+        corr, pval = stats.spearmanr(x, y)
+
+    # Bootstrap
+    bootstrap_corrs = []
+    for _ in range(n_bootstrap):
+        indices = np.random.randint(0, n, size=n)
+        x_boot = x[indices]
+        y_boot = y[indices]
+
+        if method == 'pearson':
+            r, _ = stats.pearsonr(x_boot, y_boot)
+        else:
+            r, _ = stats.spearmanr(x_boot, y_boot)
+
+        bootstrap_corrs.append(r)
+
+    bootstrap_corrs = np.array(bootstrap_corrs)
+
+    # Confidence interval
+    alpha = 1 - confidence
+    ci_lower = np.percentile(bootstrap_corrs, 100 * alpha / 2)
+    ci_upper = np.percentile(bootstrap_corrs, 100 * (1 - alpha / 2))
+
+    return {
+        'correlation': float(corr),
+        'ci_lower': float(ci_lower),
+        'ci_upper': float(ci_upper),
+        'p_value': float(pval),
+        'method': method,
+    }
+
+
+def fit_linear_regression(
+    X: np.ndarray,
+    y: np.ndarray,
+    feature_names: Optional[List[str]] = None,
+) -> Dict:
+    """
+    Fit a simple linear regression and return summary statistics.
+
+    Args:
+        X: Feature matrix (n_samples, n_features) or (n_samples,) for single feature
+        y: Target variable (n_samples,)
+        feature_names: Optional names for features
+
+    Returns:
+        Dictionary with regression results:
+        - 'coefficients': Dict mapping feature names to coefficients
+        - 'intercept': Intercept term
+        - 'r_squared': R^2 score
+        - 'predictions': Predicted values
+    """
+    from sklearn.linear_model import LinearRegression
+    from sklearn.metrics import r2_score
+
+    # Ensure X is 2D
+    if X.ndim == 1:
+        X = X.reshape(-1, 1)
+
+    # Default feature names
+    if feature_names is None:
+        feature_names = [f'x{i}' for i in range(X.shape[1])]
+
+    # Fit model
+    model = LinearRegression()
+    model.fit(X, y)
+
+    # Get predictions
+    y_pred = model.predict(X)
+    r2 = r2_score(y, y_pred)
+
+    # Build coefficients dict
+    coefficients = {}
+    for name, coef in zip(feature_names, model.coef_):
+        coefficients[name] = float(coef)
+
+    return {
+        'coefficients': coefficients,
+        'intercept': float(model.intercept_),
+        'r_squared': float(r2),
+        'predictions': y_pred,
+    }

@@ -19,8 +19,10 @@ Permutation alignment (Git Re-Basin / weight matching) can successfully connect 
 │   ├── train.py             # Training and evaluation
 │   ├── rebasin.py           # Git Re-Basin implementation
 │   ├── interp.py            # Weight interpolation utilities
-│   ├── metrics.py           # Spurious Reliance Score, barriers
-│   └── plotting.py          # Visualization helpers
+│   ├── metrics.py           # Spurious Reliance Score, barriers, correlations
+│   ├── plotting.py          # Visualization helpers
+│   ├── cka.py               # CKA similarity and activation capture
+│   └── pairs.py             # Model pair enumeration utilities
 ├── notebooks/               # Jupyter notebooks (run in order)
 │   ├── 00_setup.ipynb
 │   ├── 01_data_spurious_envs.ipynb
@@ -28,7 +30,8 @@ Permutation alignment (Git Re-Basin / weight matching) can successfully connect 
 │   ├── 03_mechanism_verification.ipynb
 │   ├── 04_rebasin_alignment.ipynb
 │   ├── 05_interpolation_and_barriers.ipynb
-│   └── 06_summary_report.ipynb
+│   ├── 06_summary_report.ipynb
+│   └── 07_mechanism_distance_predicts_barrier.ipynb
 └── results/                 # Generated outputs (created automatically)
     ├── checkpoints/         # Model weights
     ├── figures/             # Visualizations
@@ -55,6 +58,7 @@ Navigate to the `notebooks/` directory and run each notebook sequentially:
 04_rebasin_alignment.ipynb  → Perform Git Re-Basin alignment
 05_interpolation_and_barriers.ipynb → Analyze loss barriers
 06_summary_report.ipynb     → Generate final report
+07_mechanism_distance_predicts_barrier.ipynb → Correlate mechanism distance with barriers
 ```
 
 Each notebook is designed to be run top-to-bottom with minimal manual intervention.
@@ -97,6 +101,26 @@ barrier = max_α L(θ_α) - max(L(θ_0), L(θ_1))
 ```
 Where θ_α is the interpolated model at position α ∈ [0, 1].
 
+### Mechanism Distance Metrics (Notebook 07)
+
+**Cue-Reliance Distance (dist_srs)**:
+```
+dist_srs = |SRS(A) - SRS(B)|
+```
+Measures the difference in spurious feature reliance between two models.
+
+**Representation Distance (dist_cka)**:
+```
+dist_cka = 1 - mean(CKA across layers)
+```
+Uses Centered Kernel Alignment (CKA) to measure how similar the internal representations are.
+
+**Singular Vector Alignment Distance (dist_sv)** (optional):
+```
+dist_sv = 1 - mean(cosine_similarity of top-k singular vectors)
+```
+Measures alignment of weight matrix structure across corresponding layers.
+
 ## Expected Results
 
 1. **Spurious models (A1, A2)** should have:
@@ -113,6 +137,11 @@ Where θ_α is the interpolated model at position α ∈ [0, 1].
 4. **Different-mechanism pairs** (A1↔R1) should have:
    - Higher loss barriers even after Re-Basin
    - Significant SRS variation along interpolation path
+
+5. **Mechanism distance should predict barriers** (Notebook 07):
+   - Higher dist_srs → Higher barriers
+   - Higher dist_cka → Higher barriers
+   - Correlation between mechanism distance and barrier height
 
 ## Configuration
 
@@ -160,8 +189,14 @@ After running all notebooks, you'll find:
 - Final summary figure
 
 ### results/
-- `summary.json` - All numerical results
+- `summary.json` - All numerical results (updated with correlation analysis)
+- `mechdist_pairs.csv` - Mechanism distance and barrier data for each model pair
 - `final_report.json` - Key findings
+
+### results/figures/ (from Notebook 07)
+- `barrier_vs_mechdist.png` - Barrier vs SRS distance scatter plots
+- `barrier_vs_cka.png` - Barrier vs CKA distance scatter plots
+- `mechanism_distance_predicts_barrier.png` - Publication-ready summary figure
 
 ## Citation
 

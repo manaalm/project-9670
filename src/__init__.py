@@ -9,6 +9,8 @@ from . import rebasin
 from . import interp
 from . import metrics
 from . import plotting
+from . import cka
+from . import pairs
 
 __all__ = [
     'config',
@@ -18,5 +20,7 @@ __all__ = [
     'rebasin',
     'interp',
     'metrics',
-    'plotting'
+    'plotting',
+    'cka',
+    'pairs',
 ]
