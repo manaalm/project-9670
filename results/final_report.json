@@ -2,11 +2,11 @@
   "project_title": "When Geometry Fails: Stress-Testing Git Re-Basin on Spurious vs Robust Features",
   "hypothesis": "Permutation alignment (Git Re-Basin) can successfully connect models relying on the same feature type, but fails to connect models with mismatched mechanisms.",
   "key_findings": [
-    "1. **Spurious Feature Reliance**: Models trained on spurious-aligned data (A1, A2) show 4.1x higher Spurious Reliance Score than robust models (R1, R2), confirming they learn to rely on the colored patch shortcut.",
-    "2. **OOD Generalization Gap**: Spurious models suffer 33.4% accuracy drop when patches are removed, while robust models only drop 8.7%.",
-    "3. **Git Re-Basin Works**: Weight matching increases cosine similarity by +0.2347 on average, enabling more meaningful weight interpolation.",
-    "4. **Geometry Fails for Mechanism Mismatch**: Even after Re-Basin, spurious-robust pairs have 2.1x higher loss barriers than same-mechanism pairs, indicating that geometric alignment cannot bridge semantic differences.",
-    "5. **Semantic Barrier Evidence**: Along the A1-R1 interpolation path, SRS varies from 0.101 (robust) to 0.423 (spurious), demonstrating that intermediate models inherit inconsistent feature dependencies."
+    "1. **Spurious Feature Reliance**: Models trained on spurious-aligned data (A1, A2) show 4.0x higher Spurious Reliance Score than robust models (R1, R2), confirming they learn to rely on the colored patch shortcut.",
+    "2. **OOD Generalization Gap**: Spurious models suffer 33.2% accuracy drop when patches are removed, while robust models only drop 9.0%.",
+    "3. **Git Re-Basin Works**: Weight matching increases cosine similarity by +0.2350 on average, enabling more meaningful weight interpolation.",
+    "4. **Geometry Fails for Mechanism Mismatch**: Even after Re-Basin, spurious-robust pairs have 2.6x higher loss barriers than same-mechanism pairs, indicating that geometric alignment cannot bridge semantic differences.",
+    "5. **Semantic Barrier Evidence**: Along the A1-R1 interpolation path, SRS varies from 0.110 (robust) to 0.433 (spurious), demonstrating that intermediate models inherit inconsistent feature dependencies."
   ],
   "additional_insights": [
     "6. **Same-Mechanism Connectivity**: Models sharing the same feature dependency (both spurious or both robust) can be smoothly interpolated after Re-Basin, with minimal loss barriers along the path.",
@@ -15,90 +15,90 @@
   ],
   "model_performance": {
     "A1": {
-      "spurious_reliance_score": 0.42311,
-      "id_accuracy": 0.9737,
-      "ood_accuracy": 0.6381,
-      "ood_drop": 0.3356,
-      "cf_accuracy_drop": 0.47850000000000004,
-      "cf_flip_rate": 0.4844,
-      "cf_mean_logit_change": 5.041301040640473,
-      "id_loss": 0.09844947943240404,
-      "ood_loss": 1.1079099557876586
+      "spurious_reliance_score": 0.43274999999999997,
+      "id_accuracy": 0.9732,
+      "ood_accuracy": 0.6411,
+      "ood_drop": 0.33209999999999995,
+      "cf_accuracy_drop": 0.49699999999999994,
+      "cf_flip_rate": 0.5027,
+      "cf_mean_logit_change": 5.119858051657677,
+      "id_loss": 0.10182878374829889,
+      "ood_loss": 1.11600683965683
     },
     "A2": {
-      "spurious_reliance_score": 0.40823,
-      "id_accuracy": 0.9729,
-      "ood_accuracy": 0.64,
-      "ood_drop": 0.3329,
-      "cf_accuracy_drop": 0.45609999999999995,
-      "cf_flip_rate": 0.4608,
-      "cf_mean_logit_change": 4.94695941901654,
-      "id_loss": 0.09909836396500468,
-      "ood_loss": 1.1339676460266113
+      "spurious_reliance_score": 0.40941000000000005,
+      "id_accuracy": 0.9733,
+      "ood_accuracy": 0.6421,
+      "ood_drop": 0.33120000000000005,
+      "cf_accuracy_drop": 0.45840000000000003,
+      "cf_flip_rate": 0.4647,
+      "cf_mean_logit_change": 4.964966112025082,
+      "id_loss": 0.09547644246742129,
+      "ood_loss": 1.0884202558517455
     },
     "R1": {
-      "spurious_reliance_score": 0.10302,
-      "id_accuracy": 0.942,
-      "ood_accuracy": 0.8523,
-      "ood_drop": 0.0897,
-      "cf_accuracy_drop": 0.11119999999999997,
-      "cf_flip_rate": 0.1126,
-      "cf_mean_logit_change": 1.9531703544676304,
-      "id_loss": 0.18189006091356277,
-      "ood_loss": 0.4571601749420166
+      "spurious_reliance_score": 0.11064000000000002,
+      "id_accuracy": 0.9435,
+      "ood_accuracy": 0.849,
+      "ood_drop": 0.09450000000000003,
+      "cf_accuracy_drop": 0.12029999999999996,
+      "cf_flip_rate": 0.1225,
+      "cf_mean_logit_change": 1.943444226101041,
+      "id_loss": 0.1770701398998499,
+      "ood_loss": 0.45894600920677187
     },
     "R2": {
-      "spurious_reliance_score": 0.09904000000000004,
-      "id_accuracy": 0.9374,
-      "ood_accuracy": 0.8533,
-      "ood_drop": 0.08410000000000006,
-      "cf_accuracy_drop": 0.10840000000000005,
-      "cf_flip_rate": 0.1096,
-      "cf_mean_logit_change": 1.9263405166119336,
-      "id_loss": 0.19287113201618195,
-      "ood_loss": 0.4661369387626648
+      "spurious_reliance_score": 0.10180999999999997,
+      "id_accuracy": 0.9398,
+      "ood_accuracy": 0.8535,
+      "ood_drop": 0.08629999999999993,
+      "cf_accuracy_drop": 0.11119999999999997,
+      "cf_flip_rate": 0.1131,
+      "cf_mean_logit_change": 1.9325758846014738,
+      "id_loss": 0.18617209379673005,
+      "ood_loss": 0.4508569130897522
     }
   },
   "group_statistics": {
-    "spurious_avg_srs": 0.41567,
-    "robust_avg_srs": 0.10103000000000002,
-    "spurious_avg_ood_drop": 0.33425,
-    "robust_avg_ood_drop": 0.08690000000000003,
-    "srs_ratio": 4.11432247847174
+    "spurious_avg_srs": 0.42108,
+    "robust_avg_srs": 0.10622499999999999,
+    "spurious_avg_ood_drop": 0.33165,
+    "robust_avg_ood_drop": 0.09039999999999998,
+    "srs_ratio": 3.9640385973170162
   },
   "barrier_analysis": {
     "A1-A2": {
       "type": "spurious-spurious",
-      "pre_id_loss_barrier": 2.373460685736686,
-      "pre_ood_loss_barrier": 1.363236619567871,
-      "pre_id_acc_barrier": 0.8412,
-      "pre_ood_acc_barrier": 0.5084,
-      "post_id_loss_barrier": 1.1276913293220103,
-      "post_ood_loss_barrier": 1.0088865842819215,
-      "post_id_acc_barrier": 0.3315,
-      "post_ood_acc_barrier": 0.3122
+      "pre_id_loss_barrier": 2.48716429264769,
+      "pre_ood_loss_barrier": 1.4933148259162905,
+      "pre_id_acc_barrier": 0.8717999999999999,
+      "pre_ood_acc_barrier": 0.5383,
+      "post_id_loss_barrier": 0.7231990662835538,
+      "post_ood_loss_barrier": 0.6142315550804138,
+      "post_id_acc_barrier": 0.25359999999999994,
+      "post_ood_acc_barrier": 0.20590000000000003
     },
     "R1-R2": {
       "type": "robust-robust",
-      "pre_id_loss_barrier": 2.3895558830976484,
-      "pre_ood_loss_barrier": 2.1162097836494445,
-      "pre_id_acc_barrier": 0.8366,
-      "pre_ood_acc_barrier": 0.7493,
-      "post_id_loss_barrier": 0.6669243087768555,
-      "post_ood_loss_barrier": 0.5515218565940856,
-      "post_id_acc_barrier": 0.23460000000000003,
-      "post_ood_acc_barrier": 0.20579999999999998
+      "pre_id_loss_barrier": 2.480421172976494,
+      "pre_ood_loss_barrier": 2.2011582575321196,
+      "pre_id_acc_barrier": 0.8407,
+      "pre_ood_acc_barrier": 0.7515999999999999,
+      "post_id_loss_barrier": 0.8377716168522834,
+      "post_ood_loss_barrier": 0.77109902882576,
+      "post_id_acc_barrier": 0.2881,
+      "post_ood_acc_barrier": 0.25680000000000003
     },
     "A1-R1": {
       "type": "spurious-robust",
-      "pre_id_loss_barrier": 2.581848657548427,
-      "pre_ood_loss_barrier": 1.7113520414352417,
-      "pre_id_acc_barrier": 0.7977,
-      "pre_ood_acc_barrier": 0.5085,
-      "post_id_loss_barrier": 1.8797656862378118,
-      "post_ood_loss_barrier": 1.0665544740676882,
-      "post_id_acc_barrier": 0.6518,
-      "post_ood_acc_barrier": 0.3616
+      "pre_id_loss_barrier": 2.2660099600166084,
+      "pre_ood_loss_barrier": 1.366063699054718,
+      "pre_id_acc_barrier": 0.7596,
+      "pre_ood_acc_barrier": 0.4713,
+      "post_id_loss_barrier": 2.056686322796345,
+      "post_ood_loss_barrier": 1.2833946999549866,
+      "post_id_acc_barrier": 0.6572,
+      "post_ood_acc_barrier": 0.3757
     }
   }
 }

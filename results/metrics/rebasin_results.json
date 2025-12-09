@@ -2,79 +2,79 @@
   "pre_rebasin": {
     "A1-A2": {
       "type": "spurious-spurious",
-      "weight_distance": 21.35919761657715,
-      "cosine_similarity": 0.24024002254009247,
-      "agreement": 0.9838
+      "weight_distance": 21.39982795715332,
+      "cosine_similarity": 0.23814205825328827,
+      "agreement": 0.9829
     },
     "R1-R2": {
       "type": "robust-robust",
-      "weight_distance": 37.13143539428711,
-      "cosine_similarity": 0.18053297698497772,
-      "agreement": 0.935
+      "weight_distance": 37.14462661743164,
+      "cosine_similarity": 0.17993947863578796,
+      "agreement": 0.9386
     },
     "A1-R1": {
       "type": "spurious-robust",
-      "weight_distance": 29.507976531982422,
-      "cosine_similarity": 0.27034106850624084,
-      "agreement": 0.928
+      "weight_distance": 29.310001373291016,
+      "cosine_similarity": 0.2820727229118347,
+      "agreement": 0.9302
     }
   },
   "post_rebasin": {
     "A1-A2": {
       "type": "spurious-spurious",
-      "weight_distance": 16.299545288085938,
-      "cosine_similarity": 0.5575674176216125,
-      "agreement": 0.9844
+      "weight_distance": 16.265974044799805,
+      "cosine_similarity": 0.5598389506340027,
+      "agreement": 0.9828
     },
     "R1-R2": {
       "type": "robust-robust",
-      "weight_distance": 30.669538497924805,
-      "cosine_similarity": 0.4409361779689789,
-      "agreement": 0.9346
+      "weight_distance": 30.460391998291016,
+      "cosine_similarity": 0.4485262930393219,
+      "agreement": 0.9383
     },
     "A1-R1": {
       "type": "spurious-robust",
-      "weight_distance": 27.273195266723633,
-      "cosine_similarity": 0.39684849977493286,
-      "agreement": 0.9283
+      "weight_distance": 27.26834487915039,
+      "cosine_similarity": 0.39672333002090454,
+      "agreement": 0.9296
     }
   },
   "comparison": {
     "A1-A2": {
       "type": "spurious-spurious",
-      "pre_weight_dist": 21.35919761657715,
-      "post_weight_dist": 16.299545288085938,
-      "weight_dist_change": -5.059652328491211,
-      "pre_cosine_sim": 0.24024002254009247,
-      "post_cosine_sim": 0.5575674176216125,
-      "cosine_sim_change": 0.3173273950815201,
-      "pre_agreement": 0.9838,
-      "post_agreement": 0.9844,
-      "agreement_change": 0.0006000000000000449
+      "pre_weight_dist": 21.39982795715332,
+      "post_weight_dist": 16.265974044799805,
+      "weight_dist_change": -5.133853912353516,
+      "pre_cosine_sim": 0.23814205825328827,
+      "post_cosine_sim": 0.5598389506340027,
+      "cosine_sim_change": 0.3216968923807144,
+      "pre_agreement": 0.9829,
+      "post_agreement": 0.9828,
+      "agreement_change": -9.999999999998899e-05
     },
     "R1-R2": {
       "type": "robust-robust",
-      "pre_weight_dist": 37.13143539428711,
-      "post_weight_dist": 30.669538497924805,
-      "weight_dist_change": -6.461896896362305,
-      "pre_cosine_sim": 0.18053297698497772,
-      "post_cosine_sim": 0.4409361779689789,
-      "cosine_sim_change": 0.26040320098400116,
-      "pre_agreement": 0.935,
-      "post_agreement": 0.9346,
-      "agreement_change": -0.00040000000000006697
+      "pre_weight_dist": 37.14462661743164,
+      "post_weight_dist": 30.460391998291016,
+      "weight_dist_change": -6.684234619140625,
+      "pre_cosine_sim": 0.17993947863578796,
+      "post_cosine_sim": 0.4485262930393219,
+      "cosine_sim_change": 0.26858681440353394,
+      "pre_agreement": 0.9386,
+      "post_agreement": 0.9383,
+      "agreement_change": -0.00029999999999996696
     },
     "A1-R1": {
       "type": "spurious-robust",
-      "pre_weight_dist": 29.507976531982422,
-      "post_weight_dist": 27.273195266723633,
-      "weight_dist_change": -2.234781265258789,
-      "pre_cosine_sim": 0.27034106850624084,
-      "post_cosine_sim": 0.39684849977493286,
-      "cosine_sim_change": 0.12650743126869202,
-      "pre_agreement": 0.928,
-      "post_agreement": 0.9283,
-      "agreement_change": 0.00029999999999996696
+      "pre_weight_dist": 29.310001373291016,
+      "post_weight_dist": 27.26834487915039,
+      "weight_dist_change": -2.041656494140625,
+      "pre_cosine_sim": 0.2820727229118347,
+      "post_cosine_sim": 0.39672333002090454,
+      "cosine_sim_change": 0.11465060710906982,
+      "pre_agreement": 0.9302,
+      "post_agreement": 0.9296,
+      "agreement_change": -0.0006000000000000449
     }
   }
 }

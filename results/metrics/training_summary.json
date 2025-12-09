@@ -1,26 +1,26 @@
 {
   "A1": {
-    "id_acc": 0.9736,
-    "ood_acc": 0.6334,
-    "ood_drop": 0.34020000000000006,
-    "final_train_loss": 0.05608321448862553
+    "id_acc": 0.9724,
+    "ood_acc": 0.6418,
+    "ood_drop": 0.3306,
+    "final_train_loss": 0.05635510696649551
   },
   "A2": {
-    "id_acc": 0.9726,
-    "ood_acc": 0.6528,
-    "ood_drop": 0.3198,
-    "final_train_loss": 0.05293766902446747
+    "id_acc": 0.9733,
+    "ood_acc": 0.6421,
+    "ood_drop": 0.33120000000000005,
+    "final_train_loss": 0.05450999300003052
   },
   "R1": {
-    "id_acc": 0.942,
-    "ood_acc": 0.8523,
-    "ood_drop": 0.0897,
-    "final_train_loss": 0.1376607501935959
+    "id_acc": 0.9435,
+    "ood_acc": 0.849,
+    "ood_drop": 0.09450000000000003,
+    "final_train_loss": 0.13945548274040223
   },
   "R2": {
-    "id_acc": 0.9367,
-    "ood_acc": 0.8536,
-    "ood_drop": 0.08309999999999995,
-    "final_train_loss": 0.14105035605430602
+    "id_acc": 0.9381,
+    "ood_acc": 0.8572,
+    "ood_drop": 0.08090000000000008,
+    "final_train_loss": 0.14035843618392943
   }
 }
